@@ -34,6 +34,21 @@ def wyswietl_liste_studentow():
     else:
         for student in students:
             print(f"ID: {student[0]}, Imię: {student[1]}, Nazwisko: {student[2]}")
+            
+def wyswietl_dane_studenta():
+    student_id = int(input("Podaj ID studenta, którego dane chcesz wyświetlić: "))
+    
+    conn = sqlite3.connect('listaStudentow.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT Imie, Nazwisko FROM listaStudentow WHERE ID=?", (student_id,))
+    student = cursor.fetchone()
+    conn.close()
+
+    if not student:
+        print("Brak studenta w bazie danych.")
+    else:
+        print(f"ID: {student_id}, Imię: {student[0]}, Nazwisko: {student[1]}")
+
 
 def aktualizuj_dane_studenta():
     student_id = int(input("Podaj ID studenta, którego dane chcesz zaktualizować: "))
@@ -63,9 +78,10 @@ if __name__ == "__main__":
     while True:
         print("\nWybierz operację:")
         print("1. Dodaj studenta")
-        print("2. Wyświetl listę studentów")
+        print("2. Wyświetl studenta")
         print("3. Aktualizuj dane studenta")
         print("4. Usuń studenta")
+        print("5. Wyświetl listę studentów")
         print("0. Wyjście")
 
         wybor = input("Twój wybór: ")
@@ -73,11 +89,13 @@ if __name__ == "__main__":
         if wybor == "1":
             dodaj_studenta()
         elif wybor == "2":
-            wyswietl_liste_studentow()
+            wyswietl_dane_studenta()
         elif wybor == "3":
             aktualizuj_dane_studenta()
         elif wybor == "4":
             usun_studenta()
+        elif wybor == "5":
+            wyswietl_liste_studentow()
         elif wybor == "0":
             print("Koniec programu.")
             break
