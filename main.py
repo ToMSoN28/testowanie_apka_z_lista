@@ -1,16 +1,7 @@
 import sqlite3
+from helped_function import utworz_tabele, wyswietl_liste_studentow, znajdz_id, wyczysc_tabele
 
-def utworz_tabele():
-    conn = sqlite3.connect('listaStudentow.db')
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS listaStudentow (
-                      ID INTEGER PRIMARY KEY,
-                      Imie TEXT,
-                      Nazwisko TEXT
-                  )''')
-    conn.commit()
-    conn.close()
-
+#Funkcje CRUD
 def dodaj_studenta(imie, nazwisko):
     if not (isinstance(imie, str) and isinstance(nazwisko, str)): return 1
     if(imie == "" or nazwisko == "" ): return 0
@@ -20,18 +11,6 @@ def dodaj_studenta(imie, nazwisko):
     conn.commit()
     conn.close()
     print("Student został dodany do bazy danych.")
-
-def wyswietl_liste_studentow():
-    conn = sqlite3.connect('listaStudentow.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT ID, Imie, Nazwisko FROM listaStudentow")
-    students = cursor.fetchall()
-    conn.close()
-    if not students:
-        return None
-    else:
-        return students 
-
 
 def wyswietl_dane_studenta(student_id):
     if not isinstance(student_id, int): return 0
@@ -65,6 +44,11 @@ def aktualizuj_dane_studenta():
     print("Dane studenta zostały zaktualizowane.")
 
 def usun_studenta(student_id):
+    if not isinstance(student_id, int): return 0
+    tmp = wyswietl_dane_studenta(student_id)
+    if tmp is None:
+        print("Brak studenta w bazie danych")
+        return
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("DELETE FROM listaStudentow WHERE ID=?", (student_id,))
@@ -72,27 +56,13 @@ def usun_studenta(student_id):
     conn.close()
     print("Student został usunięty z bazy danych.")
 
-
-def znajdz_id(nazwisko):
-    conn = sqlite3.connect('listaStudentow.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT ID FROM listaStudentow WHERE Nazwisko=?", (nazwisko,))
-    student_id = cursor.fetchone()
-    conn.close()
-
-    if not student_id:
-        return print("Nie istnieje")
-    else:
-        return student_id[0]
+    # if not student_id:
+    #     return print("Nie istnieje")
+    # else:
+    #     return student_id[0]
     
-def wyczysc_tabele():
-    conn = sqlite3.connect('listaStudentow.db')
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM listaStudentow')
-    conn.commit()
-    conn.close()
 
-
+#Program
 if __name__ == "__main__":
     utworz_tabele()
 

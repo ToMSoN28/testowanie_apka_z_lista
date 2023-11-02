@@ -1,7 +1,7 @@
 import sqlite3
 import unittest
-import main
-from main import utworz_tabele, dodaj_studenta, wyswietl_dane_studenta, usun_studenta, znajdz_id, wyswietl_liste_studentow
+from main import dodaj_studenta, wyswietl_dane_studenta, usun_studenta
+from helped_function import utworz_tabele, wyswietl_liste_studentow, znajdz_id
 
 class TestDatabaseCRUD(unittest.TestCase):
     @classmethod
@@ -110,6 +110,5 @@ class TestDatabaseCRUD(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    main.wyczysc_tabele()
     unittest.main()
         
