@@ -11,10 +11,8 @@ def utworz_tabele():
     conn.commit()
     conn.close()
 
-def dodaj_studenta():
-    imie = input("Podaj imię studenta: ")
-    nazwisko = input("Podaj nazwisko studenta: ")
-
+def dodaj_studenta(imie, nazwisko):
+    if(imie == "" or nazwisko == "" ): return 0
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("INSERT INTO listaStudentow (Imie, Nazwisko) VALUES (?, ?)", (imie, nazwisko))
@@ -28,16 +26,13 @@ def wyswietl_liste_studentow():
     cursor.execute("SELECT ID, Imie, Nazwisko FROM listaStudentow")
     students = cursor.fetchall()
     conn.close()
-
     if not students:
-        print("Brak studentów w bazie danych.")
+        return None
     else:
-        for student in students:
-            print(f"ID: {student[0]}, Imię: {student[1]}, Nazwisko: {student[2]}")
-            
-def wyswietl_dane_studenta():
-    student_id = int(input("Podaj ID studenta, którego dane chcesz wyświetlić: "))
-    
+        return students 
+
+
+def wyswietl_dane_studenta(student_id):
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("SELECT Imie, Nazwisko FROM listaStudentow WHERE ID=?", (student_id,))
@@ -45,9 +40,14 @@ def wyswietl_dane_studenta():
     conn.close()
 
     if not student:
-        print("Brak studenta w bazie danych.")
+        return None 
     else:
-        print(f"ID: {student_id}, Imię: {student[0]}, Nazwisko: {student[1]}")
+        student_data = {
+            "ID": student_id,
+            "Imie": student[0],
+            "Nazwisko": student[1]
+        }
+        return student_data  
 
 
 def aktualizuj_dane_studenta():
@@ -62,15 +62,27 @@ def aktualizuj_dane_studenta():
     conn.close()
     print("Dane studenta zostały zaktualizowane.")
 
-def usun_studenta():
-    student_id = int(input("Podaj ID studenta, którego chcesz usunąć: "))
-
+def usun_studenta(student_id):
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("DELETE FROM listaStudentow WHERE ID=?", (student_id,))
     conn.commit()
     conn.close()
     print("Student został usunięty z bazy danych.")
+
+
+def znajdz_id(nazwisko):
+    conn = sqlite3.connect('listaStudentow.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT ID FROM listaStudentow WHERE Nazwisko=?", (nazwisko,))
+    student_id = cursor.fetchone()
+    conn.close()
+
+    if not student_id:
+        return print("Nie istnieje")
+    else:
+        return student_id[0]
+
 
 if __name__ == "__main__":
     utworz_tabele()
@@ -82,20 +94,48 @@ if __name__ == "__main__":
         print("3. Aktualizuj dane studenta")
         print("4. Usuń studenta")
         print("5. Wyświetl listę studentów")
+        print("6. Znajdź ID na podstawie nazwiska")
         print("0. Wyjście")
 
         wybor = input("Twój wybór: ")
 
         if wybor == "1":
-            dodaj_studenta()
+            imie = input("Podaj imię studenta: ")
+            nazwisko = input("Podaj nazwisko studenta: ")
+            dodaj_studenta(imie, nazwisko)
+
         elif wybor == "2":
-            wyswietl_dane_studenta()
+            student_id = int(input("Podaj ID studenta, którego dane chcesz wyświetlić: "))
+            student_data = wyswietl_dane_studenta(student_id)
+            if student_data:
+                print(f"ID: {student_data['ID']}, Imię: {student_data['Imie']}, Nazwisko: {student_data['Nazwisko']}")
+            else:
+                print("Brak studenta w bazie danych.")
+
+
         elif wybor == "3":
             aktualizuj_dane_studenta()
+
         elif wybor == "4":
-            usun_studenta()
+            student_id = int(input("Podaj ID studenta, którego chcesz usunąć: "))
+            usun_studenta(student_id)
+
         elif wybor == "5":
-            wyswietl_liste_studentow()
+            students = wyswietl_liste_studentow()
+            if students is not None:
+                for student in students:
+                    print(f"ID: {student[0]}, Imię: {student[1]}, Nazwisko: {student[2]}")
+            else:
+                print("Brak studentów w bazie danych.")
+
+        elif wybor == "6":
+            nazwisko = input("Podaj nazwisko studenta: ")
+            student_id = znajdz_id(nazwisko)
+            if student_id is not None:
+                print(f"ID studenta: {student_id}")
+            else:
+                print(f"Brak studenta o nazwisku {nazwisko} w bazie danych.")
+
         elif wybor == "0":
             print("Koniec programu.")
             break
