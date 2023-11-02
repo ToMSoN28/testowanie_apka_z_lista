@@ -14,6 +14,7 @@ def dodaj_studenta(imie, nazwisko):
 
 def wyswietl_dane_studenta(student_id):
     if not isinstance(student_id, int): return 0
+    if student_id < 1: return 1
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("SELECT Imie, Nazwisko FROM listaStudentow WHERE ID=?", (student_id,))
@@ -31,11 +32,15 @@ def wyswietl_dane_studenta(student_id):
         return student_data  
 
 
-def aktualizuj_dane_studenta():
-    student_id = int(input("Podaj ID studenta, którego dane chcesz zaktualizować: "))
-    imie = input("Nowe imię studenta: ")
-    nazwisko = input("Nowe nazwisko studenta: ")
-
+def aktualizuj_dane_studenta(student_id, imie, nazwisko):
+    if not (isinstance(student_id, int) or student_id is None): return 0
+    if not (isinstance(imie, str) or student_id is None): return 1
+    if not (isinstance(nazwisko, str) or student_id is None): return 2
+    tmp = wyswietl_dane_studenta(student_id)
+    if tmp is None:
+        print("Brak studenta w bazie danych")
+        return 4
+    
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("UPDATE listaStudentow SET Imie=?, Nazwisko=? WHERE ID=?", (imie, nazwisko, student_id))
@@ -48,17 +53,10 @@ def usun_studenta(student_id):
     tmp = wyswietl_dane_studenta(student_id)
     if tmp is None:
         print("Brak studenta w bazie danych")
-        return
+        return 1
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("DELETE FROM listaStudentow WHERE ID=?", (student_id,))
     conn.commit()
     conn.close()
     print("Student został usunięty z bazy danych.")
-
-    # if not student_id:
-    #     return print("Nie istnieje")
-    # else:
-    #     return student_id[0]
-    
-

@@ -33,7 +33,10 @@ if __name__ == "__main__":
 
 
         elif wybor == "3":
-            aktualizuj_dane_studenta()
+            student_id = int(input("Podaj ID studenta, którego dane chcesz zaktualizować: "))
+            imie = input("Nowe imię studenta: ")
+            nazwisko = input("Nowe nazwisko studenta: ")
+            aktualizuj_dane_studenta(student_id, imie, nazwisko)
 
         elif wybor == "4":
             student_id = int(input("Podaj ID studenta, którego chcesz usunąć: "))
