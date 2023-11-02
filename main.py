@@ -12,6 +12,7 @@ def utworz_tabele():
     conn.close()
 
 def dodaj_studenta(imie, nazwisko):
+    if not (isinstance(imie, str) and isinstance(nazwisko, str)): return 1
     if(imie == "" or nazwisko == "" ): return 0
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
@@ -33,6 +34,7 @@ def wyswietl_liste_studentow():
 
 
 def wyswietl_dane_studenta(student_id):
+    if not isinstance(student_id, int): return 0
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("SELECT Imie, Nazwisko FROM listaStudentow WHERE ID=?", (student_id,))
@@ -82,6 +84,13 @@ def znajdz_id(nazwisko):
         return print("Nie istnieje")
     else:
         return student_id[0]
+    
+def wyczysc_tabele():
+    conn = sqlite3.connect('listaStudentow.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM listaStudentow')
+    conn.commit()
+    conn.close()
 
 
 if __name__ == "__main__":
