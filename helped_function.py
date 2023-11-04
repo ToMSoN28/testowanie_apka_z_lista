@@ -40,3 +40,16 @@ def wyczysc_tabele():
     cursor.execute('DELETE FROM listaStudentow')
     conn.commit()
     conn.close()
+def znajdz_najwyzsze_id():
+    conn = sqlite3.connect('listaStudentow.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT ID FROM listaStudentow ORDER BY ID DESC LIMIT 1")
+    ostatni_student = cursor.fetchone()
+    if ostatni_student:
+        conn.commit()
+        conn.close()
+        return ostatni_student[0]
+    else:
+        conn.commit()
+        conn.close()
+        return None
