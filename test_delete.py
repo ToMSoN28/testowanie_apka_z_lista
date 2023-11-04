@@ -50,3 +50,5 @@ class TestDatabaseCRUD(unittest.TestCase):
         student_id = znajdz_id(nazwisko)
         usun_studenta(student_id)
 
+if __name__ == "__main__":
+    unittest.main()

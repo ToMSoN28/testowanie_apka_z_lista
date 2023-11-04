@@ -149,3 +149,5 @@ class TestDatabaseCRUD(unittest.TestCase):
         usun_studenta(student_id)
 
 
+if __name__ == "__main__":
+    unittest.main()
