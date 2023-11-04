@@ -15,7 +15,7 @@ class TestDatabaseCRUD(unittest.TestCase):
     def setUp(self):
         utworz_tabele()       
 
-    def test_wyswietl_dane_studenta_instnieje(self):
+    def test_wyswietl_dane_studenta_istnieje(self):
         imie = "Anna"
         nazwisko = "Nowak"
         dodaj_studenta(imie, nazwisko)
@@ -27,7 +27,7 @@ class TestDatabaseCRUD(unittest.TestCase):
         usun_studenta(student_id)
 
     
-    def test_wyswietl_dane_studenta_nie_instnieje(self):
+    def test_wyswietl_dane_studenta_nie_istnieje(self):
         student_id = 112333455
         student_data = wyswietl_dane_studenta(student_id)
         self.assertIsNone(student_data) 
