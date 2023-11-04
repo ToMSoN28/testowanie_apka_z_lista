@@ -36,6 +36,11 @@ class TestDatabaseCRUD(unittest.TestCase):
         nazwisko = ""
         self.assertEqual(0, dodaj_studenta(imie, nazwisko))
         
+    def test_dodaj_studenta_puste_imie_i_nazwisko(self):
+        imie = ""
+        nazwisko = ""
+        self.assertEqual(0, dodaj_studenta(imie, nazwisko))
+        
     def test_dodaj_studenta_None_imie(self):
         imie = None
         nazwisko = "Zukowski"
@@ -46,6 +51,11 @@ class TestDatabaseCRUD(unittest.TestCase):
         nazwisko = None
         self.assertEqual(1, dodaj_studenta(imie, nazwisko))
         
+    def test_dodaj_studenta_None_imie_i_nazwisko(self):
+        imie = None
+        nazwisko = None
+        self.assertEqual(1, dodaj_studenta(imie, nazwisko))
+        
     def test_dodaj_studenta_not_string_imie(self):
         imie = 123
         nazwisko = "Zukowski"
@@ -53,6 +63,11 @@ class TestDatabaseCRUD(unittest.TestCase):
         
     def test_dodaj_studenta_not_string_nazwisko(self):
         imie = "Jan"
+        nazwisko = 123
+        self.assertEqual(1, dodaj_studenta(imie, nazwisko))
+        
+    def test_dodaj_studenta_not_string_imie_i_nazwisko(self):
+        imie = 123
         nazwisko = 123
         self.assertEqual(1, dodaj_studenta(imie, nazwisko))
         
