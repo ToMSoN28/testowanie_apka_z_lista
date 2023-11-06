@@ -5,7 +5,7 @@ from helped_function import utworz_tabele, wyswietl_liste_studentow, znajdz_id, 
 # Funkcje CRUD
 def dodaj_studenta(imie, nazwisko):
     if not (isinstance(imie, str) and isinstance(nazwisko, str)): return 0
-    if imie == "" or nazwisko == "": return 1
+    if imie == "" or nazwisko == "": return 0
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
     cursor.execute("INSERT INTO listaStudentow (Imie, Nazwisko) VALUES (?, ?)", (imie, nazwisko))

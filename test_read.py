@@ -37,6 +37,11 @@ class TestDatabaseCRUD(unittest.TestCase):
         student_data = wyswietl_dane_studenta(student_id)
         self.assertEqual(1, student_data)
         
+    def test_wyswietl_dane_studenta_id_zero(self):
+        student_id = 0
+        student_data = wyswietl_dane_studenta(student_id)
+        self.assertEqual(1, student_data)
+        
     def test_wyswietl_dane_studenta_id_nie_int(self):
         student_id = "123"
         student_data = wyswietl_dane_studenta(student_id)

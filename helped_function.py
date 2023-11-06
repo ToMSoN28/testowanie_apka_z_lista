@@ -40,6 +40,7 @@ def wyczysc_tabele():
     cursor.execute('DELETE FROM listaStudentow')
     conn.commit()
     conn.close()
+    
 def znajdz_najwyzsze_id():
     conn = sqlite3.connect('listaStudentow.db')
     cursor = conn.cursor()
